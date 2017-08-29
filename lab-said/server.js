@@ -28,7 +28,7 @@ server.on('connection', socket => {
       pool.forEach(c => c.socket.write(data.toString().split(' ').slice(1).join() + '\n'));
     } else if(cmd === '@nick') {
       client.nick = data.toString().split(' ').pop().trim();
-      console.log('welcom to our room: ' + client.nick );
+      console.log('Welcome to our room: ' + client.nick );
     } else if(cmd === '@dm') {
       let commandLineArr = data.toString().split(' ');
       console.log(commandLineArr);
