@@ -20,19 +20,26 @@ ee.on('default', (client, string) => {
 });
 
 server.on('connection', socket => {
-  let client = new Client(socket)
-  pool.push(client)
-  pool.forEach(c => c.socket.write(`${client.nick} has joined the channel\n`))
+ let client = new Client(socket);
+ // console.log('client', client)
+ pool.push(client);
+ pool.forEach(c => c.socket.write(`${client.nick} has joined the channel\n`));
 
-  socket.on('data', data => {
-    let cmd = data.toString().split(' ').shift().trim()
-    console.log(cmd)
-    if(cmd === '@all') {
-      pool.forEach(c => c.socket.write(data.toString()))
-    }  else {
-      ee.emit('default', client, data.toString().split(' ').slice(1).join())
-    }
-})
+ socket.on('data', data => {
+   let cmd = data.toString().split(' ').shift().trim();
+   console.log(cmd);
+   if(cmd === '@all') {
+     console.log(data.toString().split(' ').slice(1).join() + '\n');
+     pool.forEach(c => c.socket.write(data.toString().split(' ').slice(1).join() + '\n'));
+   } else if(cmd === '@nick') {
+     client.nick = data.toString().split(' ').pop().trim();
+     console.log('welcom to our room: ' + client.nick );
+   } else if(cmd === '@dm') {
+
+   }
+   // console.log(data.toString()) => will print whatever data was transmitted
+ });
+});
 
 
 server.listen(3000, () => console.log('listening on port 3000'))
